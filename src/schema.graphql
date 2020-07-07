@@ -20,11 +20,18 @@ type Query {
         deleteComment(id : ID!) : Comment!
         updateComment(id : ID!, data : UpdateCommentInput) : Comment!
     }
+
+    type Subscription {
+        comment(postId : ID!) : CommentSubscriptionPayload!
+        post : PostSubscriptionPayload!
+    }
+
     input CreateUserInput {
         name : String!,
         email : String!,
         age : Int
     }
+
     input UpdateUserInput {
         name : String
         email : String
@@ -49,6 +56,7 @@ type Query {
     input UpdateCommentInput {
         text : String
     }
+
     type Post {
         id : ID!
         title : String!
@@ -72,4 +80,19 @@ type Query {
         text : String!
         author : User!
         post : Post!
+    }
+
+    enum MutationType {
+        CREATED
+        UPDATED
+        DELETED
+    }
+
+    type CommentSubscriptionPayload {
+        mutation : MutationType!
+        data : Comment!
+    }
+    type PostSubscriptionPayload {
+        mutation : MutationType!
+        data  : Post!
     }
